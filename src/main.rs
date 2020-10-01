@@ -1,4 +1,4 @@
-use std::io::{BufReader, BufRead};
+use std::io::{BufReader, BufRead, Write};
 use rand::distributions::Distribution;
 
 fn main() {
@@ -47,7 +47,8 @@ fn ask(list : &Vec<(String, String)>) {
     let mut rng = rand::thread_rng();
     let dist = rand::distributions::Uniform::new(0, list.len());
     let (question, answer) = &list[dist.sample(&mut rng)];
-    println!("{}", question);
+    print!("{}\n> ", question);
+    std::io::stdout().flush().unwrap();
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     diff(input.trim_end(), answer);
