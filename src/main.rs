@@ -1,5 +1,5 @@
-use std::io::{BufReader, BufRead, Write};
 use rand::distributions::Distribution;
+use std::io::{BufRead, BufReader, Write};
 
 fn main() {
     let mut args = std::env::args();
@@ -8,7 +8,7 @@ fn main() {
         match read(filename) {
             Ok(list) => loop {
                 ask(&list);
-            }
+            },
             Err(err) => {
                 println!("{}", err);
             }
@@ -25,25 +25,23 @@ fn read(filename: String) -> Result<Vec<(String, String)>, Box<dyn std::error::E
     let mut ret = Vec::new();
 
     loop {
-        let question;
-        if let Some(line) = lines.next() {
-            question = line?;
+        let question = if let Some(line) = lines.next() {
+            line?
         } else {
-            break
-        }
-        let answer;
-        if let Some(line) = lines.next() {
-            answer = line?;
+            break;
+        };
+        let answer = if let Some(line) = lines.next() {
+            line?
         } else {
-            break
-        }
+            break;
+        };
         ret.push((question, answer));
     }
 
     Ok(ret)
 }
 
-fn ask(list : &Vec<(String, String)>) {
+fn ask(list: &Vec<(String, String)>) {
     let mut rng = rand::thread_rng();
     let dist = rand::distributions::Uniform::new(0, list.len());
     let (question, answer) = &list[dist.sample(&mut rng)];
@@ -54,9 +52,9 @@ fn ask(list : &Vec<(String, String)>) {
     diff(input.trim_end(), answer);
 }
 
-fn diff(s : &str, t : &str){
+fn diff(s: &str, t: &str) {
     if s == t {
-        return
+        return;
     }
     let slen = s.chars().count();
     let tlen = t.chars().count();
@@ -77,7 +75,7 @@ fn diff(s : &str, t : &str){
         let mut diff = vec![true; tlen];
         let mut i = slen;
         let mut j = tlen;
-        for t in (0 .. table[slen][tlen]).rev() {
+        for t in (0..table[slen][tlen]).rev() {
             while table[i - 1][j] > t {
                 i -= 1;
             }
